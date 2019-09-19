@@ -22,6 +22,14 @@ const donationRouter = router.createRouter();
 /**
  * Methods that create routing
  */
+donationRouter.use("/posts", (req, res) => {
+	res.send([
+	{
+	  title: "Hello World!",
+      description: "Hi there! How are you?"
+	}
+	])
+});
 donationRouter.use("/donate", donationController.renderDonatePage);
 donationRouter.use("/page=:page", donationController.renderDashboardPage);
 donationRouter.use("/toDonate", donationController.receivingDonationData);
