@@ -1,55 +1,155 @@
 
 <template>
- <div class="Donating__header">
-  <div class="container">
-    <div class="row Donating__row-of-header">
-      <div class="col-2">
-        <a href="/page=1" class="Donating__link">
-          Dashboard
-        </a>
+  <div class="Vue-component">
+   <div class="Donating__header">
+    <div class="container">
+      <div class="row Donating__row-of-header">
+        <div class="col-2">
+           <router-link to="/page=1" class="Donating__link">Dashboard</router-link>
+        </div>
+        <div class="col-2">
+          <a href="./donate" class="Donating__link">
+            Donate
+          </a>
+        </div>
       </div>
-      <div class="col-2">
-        <a href="./donate" class="Donating__link">
-          Donate
-        </a>
+    </div>
+  </div> 
+  <div class="container">
+    <div class="row Donating__information-section">
+      <div class="col-4">
+        <div class="Donating__information-block first-block">
+          <p class="Donating__block-headline">Top Donator</p>
+          <p class="Donating__block-price">$ {{pageData[0].maxAmount}}</p>
+          <p class="Donating__block-person">{{pageData[0].topDonator}}</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="Donating__information-block second-block">
+          <p class="Donating__block-headline">Last Month Amount</p>
+          <p class="Donating__block-price">$ {{pageData[0].amountForThisMonth}}</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="Donating__information-block third-block">
+          <p class="Donating__block-headline">All time amount</p>
+          <p class="Donating__block-price">${{pageData[0].amount}}</p>
+        </div>
       </div>
     </div>
   </div>
-  <button @click="test()">{{msg}}</button>
-</div> 
+  <div class="container-fluid Donating__container-chart">
+    <div id="curve_chart" class="Donating__chart"></div>
+  </div>
+  <div class="container-fluid">
+    <div class="Donating__main-info">
+      <table class="Donating__table">
+        <tr class="Donating__tb-row main">
+          <td class="Donating__tb-col headline">Donator Name</td>
+          <td class="Donating__tb-col headline">Email</td>
+          <td class="Donating__tb-col headline">Amount</td>
+          <td class="Donating__tb-col headline">Message</td>
+          <td class="Donating__tb-col headline">Date</td>
+        </tr>
+        <tr v-for="donation in pageData[0].donations" class="Donating__tb-row main">
+          <td class="Donating__tb-col">{{donation.volunteer_name}}</td>
+          <td class="Donating__tb-col">{{donation.email}}</td>
+          <td class="Donating__tb-col">{{donation.amount}}</td>
+          <td class="Donating__tb-col">{{donation.message}}</td>
+          <td class="Donating__tb-col">{{JSON.stringify(donation.date).substring(1, 11)}}  {{JSON.stringify(donation.date).substring(12, 20)}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="Donating__pagination">
+      <ul v-if="pageData[0].pages > 0" class="pagination text-center">
+        <li v-if="pageData[0].current == 1" class="disabled"><a>First</a></li>
+        <li v-else><a href="/page=1">First</a></li>
+        <li v-if="paginationIterator !== 1" class="disabled"><a>...</a></li>
+        <template v-if="paginationIterator <= (Number(pageData[0].current) + 4) && paginationIterator <= pageData[0].pages">
+          <template v-for="i in pageData[0].pages">
+            <li v-if="paginationIterator == pageData[0].current" class="active"><a>{{paginationIterator}}</a></li>
+            <li v-else><a href="page=<%= i %>">{{paginationIterator}}</a></li>
+            <li v-if="paginationIterator == Number(pageData[0].current) + 4 && paginationIterator < pageData[0].pages" class="disabled"><a>...</a></li>
+          </template>
+        </template>
+        <li v-if="pageData[0].current == pageData[0].pages" class="disabled"><a>Last</a></li>
+        <li v-else><a href="page=<%= pages %>">Last</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 </template>
 
+
+
+
 <script>
+
   import PostsService from '@/services/PostsService'
+  import { mapState } from 'vuex'
 
   export default {
-    props: ['id'],
+    // loadDashboardPage: false,
+    computed: mapState([
+      'pageData',
+      'paginationIterator'
+      ]),
 
     data () {
       return {
-        msg: 'Welcome to Test Page',
-        posts: []
+        // paginationIterator: null
       }
+    },
+
+    created () {
+      this.getPageData()
+    },
+
+    watch: {
+      '$route': 'getPageData'
     },
 
     methods: {
-      async getPosts () {
-        const {data} = await PostsService.fetchPosts()
-        console.log('data', data);
-        this.posts = data
+      async getPageData () {
+        const {data} = await PostsService.fetchPageData(this.$route.params.id);
+        this.$store.commit('getData', data);
+        const iterator = (Number(this.pageData[0].current) > 5 ? Number(this.pageData[0].current) - 4 : 1);
+        this.$store.commit('getPaginationIterator', iterator)
       },
-      async test() {
-        // console.log(this.id)
-      }
-    },
-
-    mounted () {
-      this.getPosts()
     }
   }
+
+  // chart script start
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    // var data = google.visualization.arrayToDataTable([
+    //   ['Date', 'Amount'],
+    //   <% for (let i = 0; i < dataForChart.length; i++) { %>
+    //     ['<%= JSON.stringify(dataForChart[i].date).substring(1, 11);%> <%= JSON.stringify(dataForChart[i].date).substring(12, 20);%>',  <%=dataForChart[i].sum%>],
+    //     <% } %>
+    //     ]);
+
+    var options = {
+      title: 'Donation Statistics',
+      curveType: 'function',
+      legend: { position: 'bottom' }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+    chart.draw(data, options);
+  }
+// chart script end
 </script>
 
 <style scoped>
+.Vue-component {
+  word-wrap: break-word;
+}
+
 .Donating__header {
   padding: 10px;
   background-color: #ee6e73;

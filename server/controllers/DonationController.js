@@ -47,18 +47,19 @@ exports.renderDashboardPage = (req, res) => {
 	if(page < 1) {
 		res.render("Error");
 	} else {
-		donationRepository.getPageCount(perPage).then(pages => {
-			donationRepository.getMaxAmount().then(maxAmount => {
-				donationRepository.getAmountForThisMonth().then(amountForThisMonth => {
-					donationRepository.getTopDonator(maxAmount).then(topDonator => {
-						donationRepository.sumAmount().then(amount => {
+		donationRepository.getPageCount(perPage).then(pages => { //
+			donationRepository.getMaxAmount().then(maxAmount => { //
+				donationRepository.getAmountForThisMonth().then(amountForThisMonth => { //
+					donationRepository.getTopDonator(maxAmount).then(topDonator => { //
+						donationRepository.sumAmount().then(amount => { //
 							donationRepository.getChartInfo().then(dataForChart => {
-								donationRepository.read(perPage, page).then(donations => {
+								donationRepository.read(perPage, page).then(donations => { //
 									let currentPage = Number(req.params.page);
 									if(isNaN(currentPage) || currentPage > pages) {
 										res.render("Error");
 									} else {
-										res.render("Dashboard", {
+										res.send([
+										{
 											donations: donations,
 											current: page,
 											pages: pages,
@@ -67,7 +68,18 @@ exports.renderDashboardPage = (req, res) => {
 											amount: amount,
 											amountForThisMonth: amountForThisMonth,
 											dataForChart: dataForChart
-										});
+										}
+										])
+										// res.render("Dashboard", {
+										// 	donations: donations,
+										// 	current: page,
+										// 	pages: pages,
+										// 	maxAmount: maxAmount,
+										// 	topDonator: topDonator,
+										// 	amount: amount,
+										// 	amountForThisMonth: amountForThisMonth,
+										// 	dataForChart: dataForChart
+										// });
 									}
 								});
 							});

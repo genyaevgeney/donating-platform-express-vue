@@ -6,11 +6,15 @@ Vue.use(Vuex)
 export default new Vuex.Store(
     {
         state: {
-            words: []
+            pageData: null,
+            paginationIterator: null,
         },
         mutations: {
-            addWord (state, word) {
-                state.words.push(word)
+            getData (state, data) {
+                state.pageData= data;
+            },
+            getPaginationIterator(state, data) {
+                state.paginationIterator=data;
             },
             deleteWord (state, word) {
                 state.words = state.words.filter(obj => obj.headword !== word)
