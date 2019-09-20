@@ -70,6 +70,8 @@ exports.renderDashboardPage = (req, res) => {
 											dataForChart: dataForChart
 										}
 										])
+										
+										
 										// res.render("Dashboard", {
 										// 	donations: donations,
 										// 	current: page,
@@ -101,17 +103,18 @@ exports.renderDashboardPage = (req, res) => {
  * @return void
  */
 exports.receivingDonationData = (req, res) => {
+	let data = JSON.parse(Object.keys(req.body));
 
 	const donationInfo = [
 		{
-			volunteer_name: req.body.name,
-			email: req.body.email,
-			amount: req.body.amount,
-			message: req.body.message,
+			volunteer_name: data.name,
+			email: data.email,
+			amount: data.amount,
+			message: data.message,
 			date: new Date()
 		},
 	];
-
+	
 	donationRepository.create(donationInfo);
 	res.redirect("/page=1");
 }
