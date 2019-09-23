@@ -99,7 +99,8 @@
     },
 
     updated () {
-      if(this.pageData[0].pages == undefined) this.$router.push("/errorPage")
+      // if(this.pageData[0].pages == undefined) this.$router.push("/errorPage")
+      console.log(this.pageData);
     },
 
     watch: {
@@ -117,7 +118,7 @@
         async function drawChart(data) {
           let arrChart = [['Date', 'Amount']];
           for(let i = 0; i < data[0].dataForChart.length; i++) {
-              arrChart.push([`${JSON.stringify(data[0].dataForChart[i].date).substring(1, 11)} ${JSON.stringify(data[0].dataForChart[i].date).substring(12, 20)}`,  data[0].dataForChart[i].sum]);
+              arrChart.push([`${JSON.stringify(data[0].dataForChart[i].date).substring(1, 11)}`,  data[0].dataForChart[i].sum]);
             }
           var data = google.visualization.arrayToDataTable(arrChart);
           var options = {

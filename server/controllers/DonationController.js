@@ -3,7 +3,7 @@
  * 
  * @type {object} donationRepository
  */
-const donationRepository = require("../repositories/donation/DonationRepository.js");
+ const donationRepository = require("../repositories/donation/DonationRepository.js");
 
 /**
  * Render error page
@@ -14,9 +14,9 @@ const donationRepository = require("../repositories/donation/DonationRepository.
  * 
  * @return void
  */
-exports.renderErrorPage = (req, res) => {
-	res.render("Error");
-}
+ exports.renderErrorPage = (req, res) => {
+ 	res.render("Error");
+ }
 
 /**
  * 
@@ -27,9 +27,9 @@ exports.renderErrorPage = (req, res) => {
  * 
  * @return void
  */
-exports.renderDonatePage = (req, res) => {
-	res.render("DonatePage");
-}
+ exports.renderDonatePage = (req, res) => {
+ 	res.render("DonatePage");
+ }
 
 /**
  * Render form page
@@ -40,58 +40,27 @@ exports.renderDonatePage = (req, res) => {
  * 
  * @return void
  */
-exports.renderDashboardPage = (req, res) => {
-	let perPage = 10;
-	let page = req.params.page || 1;
-
-	if(page < 1) {
-		res.render("Error");
-	} else {
-		donationRepository.getPageCount(perPage).then(pages => { //
-			donationRepository.getMaxAmount().then(maxAmount => { //
-				donationRepository.getAmountForThisMonth().then(amountForThisMonth => { //
-					donationRepository.getTopDonator(maxAmount).then(topDonator => { //
-						donationRepository.sumAmount().then(amount => { //
-							donationRepository.getChartInfo().then(dataForChart => {
-								donationRepository.read(perPage, page).then(donations => { //
-									let currentPage = Number(req.params.page);
-									if(isNaN(currentPage) || currentPage > pages) {
-										res.render("Error");
-									} else {
-										res.send([
-										{
-											donations: donations,
-											current: page,
-											pages: pages,
-											maxAmount: maxAmount,
-											topDonator: topDonator,
-											amount: amount,
-											amountForThisMonth: amountForThisMonth,
-											dataForChart: dataForChart
-										}
-										])
-										
-										
-										// res.render("Dashboard", {
-										// 	donations: donations,
-										// 	current: page,
-										// 	pages: pages,
-										// 	maxAmount: maxAmount,
-										// 	topDonator: topDonator,
-										// 	amount: amount,
-										// 	amountForThisMonth: amountForThisMonth,
-										// 	dataForChart: dataForChart
-										// });
-									}
-								});
-							});
-						});
-					});
-				});
-			});
-		});
-	}
-}
+ exports.renderDashboardPage = async (req, res) => {
+ 	const perPage = 10;
+ 	const page = req.params.page || 1;
+ 	if(page < 1) return;
+ 	const currentPage = Number(req.params.page);
+ 	const pages = await donationRepository.getPageCount(perPage);
+ 	if(isNaN(currentPage) || currentPage > pages) return;
+ 	const maxAmount = await donationRepository.getMaxAmount();
+ 	res.send([
+ 	{
+ 		donations: await donationRepository.read(perPage, page),
+ 		current: page,
+ 		pages: pages,
+ 		maxAmount: maxAmount,
+ 		topDonator: await donationRepository.getTopDonator(maxAmount),
+ 		amount: await donationRepository.sumAmount(),
+ 		amountForThisMonth: await donationRepository.getAmountForThisMonth(),
+ 		dataForChart: await donationRepository.getChartInfo()
+ 	}
+ 	])
+ }
 
 /**
  * Enter data from the form into the database and redirect to the main page
@@ -102,22 +71,25 @@ exports.renderDashboardPage = (req, res) => {
  * 
  * @return void
  */
-exports.receivingDonationData = (req, res) => {
-	let data = JSON.parse(Object.keys(req.body));
+ exports.receivingDonationData = (req, res) => {
+ 	const data = JSON.parse(Object.keys(req.body));
+ 	if(!data.name || !data.email || !data.amount || !data.message) {
+ 		console.log("All form fields must be filled")
+ 	} else {
+ 		const donationInfo = [
+ 		{
+ 			volunteer_name: data.name,
+ 			email: data.email,
+ 			amount: data.amount,
+ 			message: data.message,
+ 			date: new Date()
+ 		},
+ 		];
 
-	const donationInfo = [
-		{
-			volunteer_name: data.name,
-			email: data.email,
-			amount: data.amount,
-			message: data.message,
-			date: new Date()
-		},
-	];
-	
-	donationRepository.create(donationInfo);
-	res.redirect("/page=1");
-}
+ 		donationRepository.create(donationInfo);
+ 		res.redirect("/page=1");
+ 	}
+ }
 
 /**
  * Redirect to home page
@@ -128,6 +100,6 @@ exports.receivingDonationData = (req, res) => {
  * 
  * @return void
  */
-exports.redirectToFirstPage = (req, res) => {
-	res.redirect("/page=1");
-}
+ exports.redirectToFirstPage = (req, res) => {
+ 	res.redirect("/page=1");
+ }
