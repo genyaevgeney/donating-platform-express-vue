@@ -43,10 +43,21 @@
  exports.renderDashboardPage = async (req, res) => {
  	const perPage = 10;
  	const page = req.params.page || 1;
- 	if(page < 1) return;
+ 	const badRequest = true;
+ 	if(page < 1) {
+ 		res.send([{
+ 			badRequest:badRequest
+ 		}])
+ 		return;
+ 	}
  	const currentPage = Number(req.params.page);
  	const pages = await donationRepository.getPageCount(perPage);
- 	if(isNaN(currentPage) || currentPage > pages) return;
+ 	if(isNaN(currentPage) || currentPage > pages) {
+ 		res.send([{
+ 			badRequest:badRequest
+ 		}])
+ 		return;
+ 	}
  	const maxAmount = await donationRepository.getMaxAmount();
  	res.send([
  	{
