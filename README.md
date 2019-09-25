@@ -16,7 +16,7 @@ Donation platform is a website that displays a list of donations and their stati
     - **Via node `npm` package manager** - Run `npm install` on the project root
     - **Via `yarn` package manager** - Run `yarn install` on the project root
 
-## Configuration for PostgreSQL database and Redis data structure store
+## Configuration for MySQL database
 
 1. Fill the **.env** file with the correct data
 
