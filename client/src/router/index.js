@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Dashboard from '@/components/Dashboard'
-import Donate from '@/components/Donate'
-import Error from '@/components/Error'
+import Dashboard from '@/views/Dashboard'
+import Donate from '@/views/Donate'
+import Error from '@/views/Error'
 
 Vue.use(Router)
 

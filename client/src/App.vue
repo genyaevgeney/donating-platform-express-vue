@@ -1,10 +1,7 @@
-
 <template>
-    <router-view/>
+    <router-view />
 </template>
 
-<script>
-  export default {
-    name: 'App'
-  }
+<script lang="scss">
+	@import "@/assets/scss/index.scss";
 </script>
