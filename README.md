@@ -4,23 +4,7 @@
 
 ![Product Image](https://cdn1.savepice.ru/uploads/2019/9/25/8c471e4e0f9861a26f85ee3ff689d078-full.png)
 
-Start your development with a Bootstrap 4 Admin Dashboard built for Node.js framework, the newest go-to technology for top companies. [Creative Tim](https://www.creative-tim.com/) partnered with [Udevoffice](https://udevoffice.com/) to provide a fully coded “frontend + backend” solution for you. It features a huge number of components that can help you create amazing websites and brings with itself innumerable advantages: lightweight, fast, scalable and modern way to execute your next top app.
-
-**FULLY CODED COMPONENTS**
-
-Argon Dashboard Node is built with over frontend 100 individual components, giving you the freedom of choosing and combining. All components can take variations in colour, that you can easily modify using SASS files.
-You will save a lot of time going from prototyping to full-functional code, because all elements are implemented. This Dashboard is coming with prebuilt examples, so the development process is seamless, switching from our pages to the real website is very easy to be done.
-Every element has multiple states for colors, styles, hover, focus, that you can easily access and use.
-View all components [here](https://argon-dashboard-nodejs.creative-tim.com/docs/components/alerts?ref=adn-readme)
-
-**COMPLEX DOCUMENTATION**
-
-Each element is well presented in a very complex documentation. You can check the components [here](https://argon-dashboard-nodejs.creative-tim.com/docs/components/alerts?ref=adn-readme) and the foundation [here](https://argon-dashboard-nodejs.creative-tim.com/docs/foundation/colors?ref=adn-readme)
-
-**Example Pages**
-
-If you want to get inspiration or just show something directly to your clients, you can jump start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.
-View example pages [here](https://argon-dashboard-nodejs.creative-tim.com/?ref=adn-readme)
+Donation platform is a website that displays a list of donations and their statistics
 
 
 ## Installation
