@@ -19,10 +19,10 @@
       ]),
 
     components: {
-      dashboardHeader: () => import('@/components/Dashboard-Header.vue'),
-      dashboardBlockInfo: () => import('@/components/Dashboard-BlockInfo.vue'),
-      dashboardChart: () => import('@/components/Dashboard-Chart.vue'),
-      dashboardPaginationInfo: () => import('@/components/Dashboard-PaginationInfo.vue'),
+      dashboardHeader: () => import('@/components/Header.vue'),
+      dashboardBlockInfo: () => import('@/components/BlockInfo.vue'),
+      dashboardChart: () => import('@/components/Chart.vue'),
+      dashboardPaginationInfo: () => import('@/components/PaginationInfo.vue'),
     },
 
     created () {

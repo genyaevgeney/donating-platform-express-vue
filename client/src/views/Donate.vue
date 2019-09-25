@@ -37,7 +37,7 @@
   export default {
 
     components: {
-      dashboardHeader: () => import('@/components/Dashboard-Header.vue')
+      dashboardHeader: () => import('@/components/Header.vue')
     },
 
     data () {
