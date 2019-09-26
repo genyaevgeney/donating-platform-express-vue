@@ -31,3 +31,4 @@ Donation platform is a website that displays a list of donations and their stati
 1. For starting the application, the following script (defined in `package.json` under `scripts`) must be called:
     - via **npm**: `npm run start` or `npm run dev` for starting the development environment, which has livereload enabled;
     - via **yarn**: `yarn start` or `yarn dev` for starting the development environment, which has livereload enabled;
+
