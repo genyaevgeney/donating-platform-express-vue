@@ -1,6 +1,6 @@
 /**
  * 50 Database Rows
- * 
+ *
  * @type {Array}
  */
 let rows = [];
@@ -16,11 +16,11 @@ for (let i = 1; i <= 50; i++) {
 
 /**
  * Add 50 rows to the database
- * 
+ *
  * @param  {object} knex
- * 
+ *
  * @return void
  */
 exports.seed = async function seed(knex) {
-  await knex('donations').insert(rows);
+  await knex("donations").insert(rows);
 };

@@ -31,35 +31,33 @@
 </template>
 
 <script>
+import PostsService from "@/services/PostsService";
 
-  import PostsService from '@/services/PostsService'
+export default {
+  components: {
+    dashboardHeader: () => import("@/components/Header.vue")
+  },
 
-  export default {
+  data() {
+    return {
+      name: "",
+      email: "",
+      amount: "",
+      message: ""
+    };
+  },
 
-    components: {
-      dashboardHeader: () => import('@/components/Header.vue')
-    },
-
-    data () {
-      return {
-        name:'',
-        email:'',
-        amount:'',
-        message:''
-      }
-    },
-
-    methods: {
-      postData () {
-        const strData = JSON.stringify({ 
-          name: this.name,
-          email: this.email,
-          amount: this.amount,
-          message: this.message
-        });
-        PostsService.postData(strData);
-        this.$router.push("/page=1");
-      }
+  methods: {
+    postData() {
+      const strData = JSON.stringify({
+        name: this.name,
+        email: this.email,
+        amount: this.amount,
+        message: this.message
+      });
+      PostsService.postData(strData);
+      this.$router.push("/page=1");
     }
   }
+};
 </script>

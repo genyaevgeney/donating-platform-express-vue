@@ -1,16 +1,17 @@
-import api from '@/services/api'
+import api from "@/services/api";
 
 export default {
-	fetchPageData (id) {
-		return api().get(`page=${id}`)
-	},
-	postData (data) {
-		api().post('/toDonate',data)
-		.then(function (response) {
-			console.log(response);
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-	}
-}
+  fetchPageData(id) {
+    return api().get(`page=${id}`);
+  },
+  postData(data) {
+    api()
+      .post("/toDonate", data)
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+};

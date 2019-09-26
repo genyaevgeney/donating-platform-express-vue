@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 export default () => {
   return axios.create({
-    baseURL: 'http://donating-platform-express-vue.com'
-  })
-}
+    baseURL: "http://donating-platform-express-vue.com"
+  });
+};
